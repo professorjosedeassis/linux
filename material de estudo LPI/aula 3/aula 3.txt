@@ -1,0 +1,65 @@
+Configurando o repositório debian
+
+Passo 1 - Configurar a lista de servidores(espelhos de rede)
+
+/etc (observação: este diretório não pode ser "separado" da raiz)
+
+caminho:
+/etc/apt
+
+arquivo:
+sources.list
+
+dica: vi /etc/apt/sources.list
+
+Atualizar(sincronizar) o repositório:
+apt-get update
+
+Instalando um pacote(APP, programa, aplicativo) no debian e derivados
+apt-get install nome_do_pacote
+ex: apt-get install aptitude
+
+Para verificar todos os pacotes disponíveis usar o comando:
+aptitude
+
+Para remover um pacote:
+apt-get remove nome_do_pacote
+ex: apt-get remove aptitude
+
+Para remoção de arquivos temporários:
+apt-get autoremove
+
+Exemplos:
+apt-get moo
+apt-get install ninvaders
+apt-get install w3m
+
+_______________________________________________________________________
+Instalando um servidor de acesso remoto no Linux (ssh)
+
+apt-get install openssh-server
+
+service ssh status (verifica o status do serviço)
+service ssh stop (para o serviço)
+service ssh start (inicia o serviço)
+serice ssh restart (reinicia o serviço)
+
+Para transformar o usuário em root
+su
+
+*** configurando o acesso ao root vi ssh (NÃO RECOMENDADO)
+caminho: /etc/ssh
+arquivo: sshd_config
+comentar a linha:
+28 #Permit Root Login without-password
+
+_______________________________________________________________
+Pós instalação:
+
+Atualizações de segurança (updates)
+apt-get -u upgrade
+
+________________________________________________________________
+Atualização da versão da distribuição (não esquecer de alterar o
+repositório, fazer back-up e homologar (ambiente de testes) o servidor.
+apt-get -u dist-upgrade

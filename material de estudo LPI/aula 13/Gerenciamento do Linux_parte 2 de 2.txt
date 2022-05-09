@@ -1,0 +1,92 @@
+Trabalhando serviços em 2° plano (background)
+*** lembrar exemplo gedit (Ubuntu)
+<ctrl> <z> -> "paraliza" o serviço em segundo plano
+jobs -> verificar serviços parados em 2° plano
+[1] -> identificador 
+bg -> "continua" o serviço em segundo plano
+fg -> traz o serviço novamente para o 1° plano
+
+____________________________________________________________
+Links:
+
+Link simbólico
+- Usado como simples apontamento
+- Podemos fazer links simbólicos de arquivos e pastas
+- O link e o arquivo não precisam estar no mesmo ponto de montagem("partição")
+- Se o link for removido o arquivo é preservado
+- qualquer usuário pode criar um link
+
+sintaxe do comando:
+
+ln -s caminho nome_link
+
+Exemplo 1:
+Criar no diretório root um link para o arquivo messages
+
+ln -s /var/log/messages mensagens
+
+Exemplo 2:
+Instalar o Java no Servidor Linux
+
+java -version -> verifica a versão do java instalado
+
+Passo 1: Fazer o download do Java (jre) "site da oracle"
+http://javadl.oracle.com/webapps/download/AutoDL?BundleId=220305_d54c1d3a095b4ff2b6607d096fa80163
+
+Passo 2: Criar um diretório para extrair o Java
+mkdir /usr/lib/jvm
+
+Passo 3: Mover o download do Java a pasta /usr/lib/jvm
+mv A<tab> /usr/lib/jvm
+
+Passo 4: Renomear o arquivo ("pulo do gato")
+mv A<tab> jre-linux.tar.gz
+
+Passo 5: Extrair o java
+tar -xzvf jre-linux.tar.gz
+
+Passo 6: Criar um link simbólico para o jre extraído
+### o link simbólico permite atualizar o java manualmente sem modificar o script de inicialização
+ln -s jre<tab> java
+
+Passo 7: Criar uma variável de ambiente global para executar o java de qualquer lugar
+
+JAVA_HOME=/usr/lib/jvm/java
+PATH=$JAVA_HOME/bin:$PATH export PATH JAVA_HOME
+
+Passo 8: Acrescentar estas linhas em /etc/profile
+/etc/profile -> Inicia variáveis junto com o sistema
+vi /etc/profile
+JAVA_HOME=/usr/lib/jvm/java
+PATH=$JAVA_HOME/bin:$PATH export PATH JAVA_HOME
+
+
+Hard Link
+Aponta para o inode do arquivo
+inode(index node) -> espaço reservado de 128 Kb que contém os atributos do arquivo
+(tamanho, data, permissões, etc) e o apontamento para o local de armazenamento no HD
+Todo arquivo tem um inode único (ID único)
+Inodes são únicos, nomes de arquivos podem mudar
+
+ls -i -> exibe o Id do arquivo
+
+Características do hard link:
+- Usado como back-up
+- Somente é possível fazer hard links no mesmo ponto de montagem (partição)
+- se o hard link for removido você tem uma cópia idêntica
+- os hard links atualizam em tempo real
+- não é possível fazer hard links de diretórios
+- só o root poe criar hard links
+
+sintaxe do comando:
+ln caminho nome_link
+
+_________________________________________________________
+Reiniciar e desligar o servidor
+init 6 -> reinicia o Linux
+init 0 -> desliga o Linux
+shutdown -h now -> desliga o linux imediatamente
+shutdown -r now -> reinicia o linux imediatamente
+shutdown -h 2 -> desliga o linux daqui a 2 minutos
+shutdown -h 1:30 -> desliga o linux no horário 1:30
+shutdown -c -> cancelar o desligamento ou a reinicialização agendada

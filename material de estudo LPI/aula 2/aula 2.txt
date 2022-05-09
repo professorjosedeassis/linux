@@ -1,0 +1,109 @@
+Comandos de arquivos:
+
+cat -> exibe o conteúdo de um arquivo
+tac -> exibe o conteúdo de um arquivo da última para a primeira linha
+head -> exibe as 10 primeiras linhas de um arquivo 
+tail -> exibe as 10 últimas linhas de um arquivo 
+
+ex: descobrir os usuários cadastrados
+cd /etc
+cat passwd
+
+cp -> usado para copiar ou copiar e renomear um arquivo
+mv -> usado para mover ou renomear um arquivo
+rm -> remover um arquivo
+ *** argumento -i (confirmação y / n)
+
+Criando um arquivo de texto:
+1) usar o comando touch
+2) usar um editor de textos
+
+vi -> editor de textos LPI
+(criar ou editar um arquivo)
+observação: vide apostila na máquina virtual
+
+_____________________________________________________________
+Comandos para inspecionar o hardware:
+
+lspci -> verifica os dispositivos pci
+
+lspci -s id -v (-s show -v verbose) -> mais detalhes sobre o dispositivo
+
+lsusb -> verifica dispositivos USB
+lsusb -d id -s (-d tipo de dispositivo)
+lsmod -> módulos(drivers) carregados
+
+fdisk -l -> exibe os dispositivos de armazenamento (HD, HD externo, pendrive,
+etc) e as partições dos discos.
+
+hd -> padrão IDE
+sd -> SATA, SCSI, demais dispositivos de armazenamento
+
+sda -> 1° dispositivo de armazenamento
+sdb -> 2° dispositivo de armazenamento
+...
+
+sda1 --- sda4 -> partições primários
+sda5 em diante -> partições extendididas e lógicas
+
+/dev -> diretório de drivers (hardware)
+
+df -h -> uso do disco
+free -> uso de memória (Kb)
+free -h -> uso de memória (Mb)
+uptime -> diagnóstico load average(cpu, memória e disco) pontuação (0 a 1)
+*** ATENÇÃO quanto mais próximo de 1 mais sobrecarregado está o servidor
+
+uname -a -> informações sobre o kernel e distribuição
+uname -rms -> 32 ou 64bits
+
+diretório /proc -> informações sobre o hardware
+
+ex:
+cat /proc/cpuinfo -> processador
+cat /proc/version -> kernel e distribuição
+
+______________________________________________________
+
+Comandos básicos de rede
+
+ifconfig -> verifica o ip do linux
+
+lo -> loopback 127.0.0.1 (usado internamente)
+eth0 -> placa de rede (cabeada)
+eth1 -> outra placa de rede cabeada
+eth2
+...
+wlan0 -> rede wireless
+ping -> testar a rede <ctrl><c> -> finalizar o teste
+
+
+/etc/network -> caminho para configurar a rede no Linux
+
+interfaces -> contém o script de configuração da rede
+
+*** fazer um backup deste arquivo
+
+Configurando a rede no Linux
+
+vi /etc/network/interfaces
+
+acrescentar as linhas
+auto eth0
+iface eth0 inet dhcp
+
+salvar e sair 
+
+reiniciar o serviço:
+
+ifup eth0 -> subir o serviço
+ifdown eth0 -> parar o serviço
+
+ou 
+
+service networking restart
+
+_____________________________________
+extra:
+
+shutdown -h 1 (desligar daqui a 1 minuto)

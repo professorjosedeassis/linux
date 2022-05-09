@@ -1,0 +1,35 @@
+x.org -> projeto de interface gráfica do Linux
+xorg.conf (arquivo principal de configuração)
+*** arquivo protegido, gerado por script
+
+caminho para configuração: /etc/X11
+
+Configurando o xorg.conf (obsoleto)
+
+Passo 1 -> Como usuário root abrir um terminal e parar o gerenciador gráfico:
+
+Gnome -> gdm
+KDE -> kdm
+Unity -> lightdm
+XFCE -> xdm
+LXDE -> ldm
+
+service lightdm stop
+
+Passo 2 -> Digitar o comando X -configure (gerar um template do x.org dentro da pasta root)
+
+Passo 3 -> Editar o arquivo xorg.conf.new
+
+Passo 4 -> renomear o arquivo para xorg.conf e mover para o diretório /etc/X11
+
+Passo 5 -> reiniciar o serviço
+service lightdm start
+
+____________________________________________________________________________________________
+*** Variável global DISPLAY -> usada para configurar acesso remoto gráfico (VNC, tean viwer)
+
+____________________________________________________________________________________________
+Acessibilidade:
+
+*** Leitor de tela (orca)
+*** pesquisar e explorar ferramentas mais usadas de acessibilidade

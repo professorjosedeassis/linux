@@ -1,0 +1,215 @@
+Recuperando a senha do root pelo GRUB (requer acesso físico no servidor)
+- No GRUB pressionar a tecla E
+- Localizar a linha do kernel (ro quiet)
+- modificar para: ro quiet init=/bin/bash
+- <ctrl><x>  (salvar)
+- digitar: mount -o remount,rw / (remontar a raiz como leitura e escrita)
+- passwd (alterar a senha do root)
+- desligar o servidor na chave liga/desliga
+
+______________________________________________________________________________
+Configurando senha no GRUB (ATENÇÃO !!! se o servidor reiniciar será necessário
+inserir a senha do GRUB manualmente)
+
+Passo 1: Ir para o diretório de configuração do GRUB
+/etc/grub.d
+
+Passo 2: Fazer uma cópia do arquivo 00_header
+
+Passo 3: Gerar uma senha criptografada(MD5) para acessar o GRUB
+grub-mkpasswd-pbkdf2
+
+Passo 4: Gerar esta senha e redirecionar para o arquivo 00_header
+(echo 1234 ; echo 1234) | grub-mkpasswd-pbkdf2 >> 00_header
+
+Passo 5: Editar o arquivo 00_header
+
+No final:
+cat <<EOF
+set superusers="admin"
+password_pbkdf2 admin hash
+
+Passo 6:
+update-grub
+
+INTRODUÇÃO AO IPTABLES
+
+- Netfilter ---> módulo do kernel Linux com funções de firewall (netfilter.org)
+- Iptables ---> linguagem de programação do Netfilter (ferramenta)
+
+-----------------------------------------------------------------------------------------------
+Conceitos básicos:
+
+Criamos uma lista com as regras e o pacote é verificado linha a linha.
+Exemplo: O pacote segue pelo firewall até a linha 3 onde se enquadra na regra.
+
+1ª Regra
+2ª Regra
+3ª Regra  (Neste caso a ação é executada e as demais regras são ignoradas)
+4ª Regra
+5ª Regra
+6ª Regra
+...
+
+O Netfilter trabalha com o conceito de ganchos para "pegar" o pacote:
+
+Ganchos:
+
+- INPUT --> Trata os pacotes antes de entregar para aplicações locais
+- FORWARD ---> Trata os pacotes que passam pelo firewall com destino a rede local      
+- OUTPUT ---> Trata os pacotes que saem das aplicações locais  
+           
+- PREROUTING ---> Trata os pacotes que chegam na interface de rede (entrada)
+- POSTROUTING ---> Trata os pacotes após deixar a interface de rede (saída)
+
+------------------------------------------------------------------------------------------------
+O Netfilter trabalha com 3 tabelas:
+
+- Tabela Filter (regras e políticas de restrições)
+  INPUT, FORWARD e OUTPUT
+
+- Tabela Nat (mudanças de endereço "roteamento")
+  OUTPUT, PREROUTING e POSTROUTING
+
+- Tabela Mangle (serviços especias Ex: Qos)
+
+------------------------------------------------------------------------------------------------
+
+Chains ---> (cadeia) Listas de regras que podem ser aplicadas nas tabelas
+
+-------------------------------------------------------------------------------------------------
+Ação da regra:
+
+ACCEPT ---> O pacote é aceito
+
+DROP ---> O pacote é descartado sem aviso ao emissor
+
+REJECT ---> O pacote é descartado com aviso ao emissor
+
+-------------------------------------------------------------------------------------------------
+Comandos iptables:
+
+iptables -L  ---> listar as regras
+iptables -F  ---> Apagar todas as regras ("matar o firewall")
+iptables -I  ---> Adicionar a regra no início da lista
+iptables -i 3  ---> Adiciona a regra na posição 3 da lista
+iptables -A  ---> Adicionar a regra no final da lista
+
+Parâmetros do iptables:
+
+-p  ---> especificar o protocolo (ex: TCP)
+-s  ---> especificar a origem
+-d  ---> especificar o destino
+-i  ---> especificar a interface de entrada (ex: eth0)
+-o  ---> especificar a interface de saída (ex: eth1)
+--sport  ---> especificar a porta de origem
+--dport  ---> especificar a porta de destino
+-j  ---> especificar a ação (ACCEPT  DROP  REJECT)
+
+-------------------------------------------------------------------------------------------------
+
+Exemplo: Bloqueio do ping
+iptables -A INPUT -p ICMP -j DROP
+
+-------------------------------------------------------------------------------------------------
+
+Criando um script de inicialização do firewall
+
+Passo1: Instalar o rcconf
+apt-get install rcconf
+
+Passo2: Criar um arquivo chamado firewall dentro do /etc/init.d
+- acrescentar as regras do firewall, salvar e sair.
+*** observação: Todo script deve iniciar com #!/bin/sh
+
+vi /etc/init.d/firewall
+#!/bin/sh
+iptables -A INPUT -p ICMP -j DROP
+
+Passo3: Dar permissão de execução a este arquivo
+chmod +x /etc/init.d/firewall
+
+Passo4: Executar o rcconf e marcar o firewall
+rcconf
+
+Passo5: Reiniciar o servidor
+reboot
+
+*** Não esqueça de fazer os testes pingando o servidor a partir do host interno
+
+-------------------------------------------------------------------------------------------------
+Criando um script simples e funcional para defender a rede contra ataques e invasões:
+
+*** Este exemplo ilustra uma situação onde o cliente necessita de acesso a internet, email
+       e acesso remoto ao servidor via SSH.
+*** A melhor configuração de firewall é aquela que libera apenas os serviços necessários,
+       proibindo todo o resto.
+
+O que precisa ser verificado (necessidade do cliente):
+
+Portas HTTP e HTTPS (normalmente 80 e 443)
+cat /etc/services | grep www
+
+Portas referente ao serviço de recebimento email (confirmar com o provedor)
+Padrões:
+recebimento de email
+POP3: (110 e 995)
+IMAP: (143 e 993)
+envio de emails
+SMTP: (25, 26, 465 e 587) 
+
+Porta referente ao DNS (normalmente a 53)
+netstat -antp | grep 53
+
+Porta referente ao SSH (normalmente a 22) 
+netstat -antp | grep 22
+
+Após a verificação dos serviços e suas respectivas portas criaremos o script:
+
+#!/bin/sh
+# Bloqueio do ping
+iptables -A INPUT -p ICMP -j DROP
+# Protecao contra port scanners ocultos
+iptables -A INPUT -p tcp --tcp-flags SYN,ACK,FIN,RST RST -m limit --limit 1/s -j ACCEPT
+# Defesa: syncookies (evita ataques de DoS "Negação de serviços")
+echo 1 > /proc/sys/net/ipv4/tcp_syncookies
+#Defesa: rpfilter (evita ataque de spoofing "falsificação de ip")
+echo 1 > /proc/sys/net/ipv4/conf/default/rp_filter
+# Elimina pacotes inválidos (evita diversos tipos de ataques)
+iptables -A INPUT -m state --state INVALID -j DROP
+# Liberando acesso a interface de loopback:
+iptables -A INPUT -p tcp -i lo -j ACCEPT
+# Liberando DNS:
+iptables -A INPUT -p tcp --dport 53 -j ACCEPT
+iptables -A INPUT -p udp --dport 53 -j ACCEPT
+# Liberando HTTP e HTTPS:
+iptables -A INPUT -p tcp --dport 80 -j ACCEPT
+iptables -A INPUT -p tcp --dport 443 -j ACCEPT
+# Libera envio e recebimento de email. Obs Verificar portas junto ao provedor
+iptables -A INPUT -p tcp --dport 110 -j ACCEPT
+iptables -A INPUT -p tcp --dport 25 -j ACCEPT
+# Liberando o acesso remoto via SSH:
+iptables -A INPUT -p tcp --dport 22 -j ACCEPT
+# Bloqueia as portas UDP de 0 a 1023 (com exceção das abertas acima):
+iptables -A INPUT -p udp --dport 0:1023 -j DROP
+# Bloqueia conexões nas demais portas:
+iptables -A INPUT -p tcp --syn -j DROP
+
+----------------------------------------------------------------------------------------------
+Regras de iptables para compartilhar a internet
+
+# Carregando o módulo correspondente
+modprobe iptable_nat
+
+# Regra
+iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
+
+----------------------------------------------------------------------------------------------
+-t nat -> utiliza o tabela de tradução de ips (roteamento)
+-A POSTROUNTIG -> adiciona a regra para saída (eth1 no caso)
+-o eth0 -> interface WAN
+-j MASQUERADE -> mascaramento dos pacote
+----------------------------------------------------------------------------------------------
+
+# Ativando o módulo ip_forward
+echo 1 > /proc/sys/net/ipv4/ip_forward

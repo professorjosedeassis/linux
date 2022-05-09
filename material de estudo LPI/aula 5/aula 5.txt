@@ -1,0 +1,72 @@
+LVM
+
+
+/etc/fstab  -> arquivo responsável por montagem das partições
+               de forma automática
+
+Diretórios que não podem ser montados em partições diferentes da raiz:
+/etc
+/bin
+/sbin
+/dev
+/proc (estudar os arquivos dentro deste diretório)
+/sys
+
+df -h -> verificar espaço em disco
+
+fdisk -l -> verificar partições
+
+
+LVM - Permite redimensionar partições sem "parar" o servidor
+      ATENÇÃO !!! Evitar diminuir partições
+      O LVM não faz redundância de discos
+
+Comandos para inspecionar o LVM
+
+pvdisplay -> Volume Físico
+vgdisplay -> Nome do Grupo de Volume
+lvdisplay -> Volumes lógicos
+
+
+Instalando um novo HD e usando ele no grupo de volume:
+
+Passo 1 - Preparar o HD:
+
+fdisk -l -> verificar o dispositivo (exemplo /dev/sdb)
+
+fdisk /dev/sdb
+
+n
+p
+1
+<enter>
+<enter>
+t
+8e
+w
+
+código hexadecimal - partições
+83 - linux native
+82 - swap
+8e - LVM
+
+
+Passo 2 - Criar o volume físico
+
+pvcreate /dev/sdb1
+
+
+Passo 3 - Adicionar o novo HD (volume físico) ao grupo de volume
+
+vgextend DATA /dev/sdb1   (DATA no meu exemplo - vgdisplay exibe grupo)
+
+Pass 4 - Redimensionando uma partição:
+
+lvdisplay -> verificar o path
+
+lvresize -L +8GB /dev/DATA/raiz
+
+Sincronizando o tamanho:
+
+resize2fs /dev/DATA/raiz
+

@@ -1,0 +1,21 @@
+Atividade individual
+Virtualizar um servidor Debian
+1GB Ram
+10GB HD1
+desconectar o cabo de rede
+partições LVM:
+1GB swap
+100MB /tmp
+3GB /
+3GB /var
+restante /home
+
+Após instalação, acrescentar outro HD de 10GB e acrescentar +5GB /home
+Configurar a rede para dhcp
+Configurar o repositório
+Personalizar a tela de login (linux logo e mensagem bem vindo)
+Configurar no grub um papel de parede
+Instalar o rcconf
+Instalar o SSH
+Atualizar o debian
+Instalar o SSH / testar com a máquina real

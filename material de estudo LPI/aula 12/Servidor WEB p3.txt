@@ -1,0 +1,214 @@
+Configurando um servidor WEB com a distribuição centOS
+
+LAMP (Linux + Apache + MySQL + PhP)
+Wordpress
+
+CentOS
+
+- anaconda (interface gráfica para instalação do CentOS)
+- por padrão o CentOS trabalha com LVM e sistema de arquivos XFS porém
+  no modo automático de particionamento de disco configura tudo numa
+  única partição
+
+Comandos de rede:
+
+ip addr -> exibir o ip
+nmcli d -> exibe o nome dos adaptadores de rede
+nmtui -> configurar dispositivos de rede
+
+yum (instalador padrão do RedHat e derivados, equivale ao apt-get)
+yum repolist -> exibe a lista de repositórios
+caminho das listas de repositório: /etc/yum.repos.d
+yum install -> instalar um pacote
+yum -y install -> instalar um pacote sem confirmação
+yum remove -> remover um pacote
+yum list -> lista os pacotes disponíveis
+yum list | grep apache -> grep (filtra - pesquisa)
+yum check-update -> verificar se há atualizações
+yum update -> atuliza os pacote (-y confirmando)
+yum upgrade -> atualiza o kernel e os pacotes
+
+__________________________________________________________
+Configurando o Apache
+yum install httpd
+
+Systemd -> sistema de inicialização do Linux
+
+systemctl status httpd.service -> verificar status do serviço
+
+status
+start
+restart
+stop
+
+systemctl start httpd.service -> iniciar o apache2
+systemctl enable httpd.service -> habilitar o serviço na inicialização
+
+_________________________________________________________
+Instalando o firewall
+yum install  firewalld
+systemctl enable firewalld.service --> Iniciar junto com o Linux
+
+### Criar regras no firewall
+### firewalld (substitui iptables para gerenciamento do netfilter)
+firewall-cmd --get-services (serviços disponíveis)
+firewall-cmd --permanent --list-all (portas abertas permanentemente no firewall)
+### Abrindo as portas 80 e 443
+firewall-cmd --add-service=http --permanent
+firewall-cmd --add-service=https --permanent
+### reiniciar o firewall
+systemctl restart firewalld
+
+Observação: Para habilitar uma porta específica, digitar:
+firewall-cmd --add-port=22/tcp --permanent
+
+*** Para remover um serviço: digitar --remove-service no lugar de --add-service
+_______________________________________________________________________________
+
+Instalação de pacotes rpm
+
+rpm -i pacote.rpm -> instalar um pacote
+rpm -hiv pacote.rpm -> instalar um pacote (h-> hash v-> verbose)
+rpm -U pacote.rpm -> atualiza o pacote
+rpm -F pacote.rpm -> atualiza o pacote apenas se houver uma versão mais nova
+rpm -e pacote.rpm -> remover um pacote
+rpm -qa -> listar todos os pacotes instalados
+rpm -ql pacote.rpm -> infprmações sobre o pacote
+
+___________________________________________________________________________
+Passo a passo: instalação do MySQL no CentOS (tutorial do site mysql.com)
+
+Passo 1: Obter o link do repositório RedHat
+Atenção! Obter este link no site mysql.com
+https://dev.mysql.com/get/mysql57-community-release-el7-11.noarch.rpm
+
+Instalar o wget (comando para fazer download)
+yum install wget
+
+Passo 2: Instalar o repositório oficial do mysql
+rpm -hiv dev.mysql.com/get/mysql57-community-release-el7-11.noarch.rpm
+yum update
+
+Passo 3: Instalar o mysql
+yum install mysql-community-server
+
+Passo 4: Iniciar o serviço
+systemctl start mysqld
+systemctl enable mysqld.service
+
+Passo 5: Obter a senha do root (gerada na instalação)
+grep ("o cara")
+grep 'temporary password' /var/log/mysqld.log
+
+Passo 6: Blindar o mysql
+mysql_secure_installation
+
+______________________________________________________________________
+Passo a passo: Instalação do php 7
+Repositório oficial (php 5.x) - obsoleto
+
+Recomenda-se instalar o php7 para o wordpress
+Passo 1:
+*** Acrescentar o repositório epel (repositório oficial red hat)
+yum install epel-release
+yum update
+Passo 2:
+instalar/atualizar manualmente os repositórios php7
+rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+rpm -Uvh https://mirror.webtatic.com/yum/el7/webtatic-release.rpm
+yum update
+Passo 3:
+yum install php70w
+
+Passo 4:
+Reiniciar o apache
+systemctl restart httpd.service
+
+php -v (verifica a versão do php)
+
+criar um arquivo na raiz do servidor web chamado php.info
+editar o arquivo:
+vi php.info();
+
+<?php
+phpinfo();
+?>
+
+acessar o arquivo pelo navegador:
+ip/php.info
+
+_______________________________________________________________________
+Passo a passo: Instalação do phpmyadmin
+
+Passo 1:
+yum install phpmyadmin
+
+Passo 2:
+editar o arquivo phpMyAdmin.conf
+
+vi /etc/httpd/conf.d/phpMyAdmin.conf
+acrescentar ip do servidor/máscara ao lado de 127.0.0.1 (mod_authz)
+systemctl restart httpd.service
+
+Para acessar a ferramenta:
+ip/phpmyadmin
+
+_______________________________________________________________________
+Passo a passo - Instalação do Wordpress
+Pré requisito: Ter o LAMP instalado
+
+Passo 1: criar um banco de dados no MySQL
+
+mysql -u root -p
+create database wordpress;
+
+Passo 2: criar um usuário com privilégios para acessar o banco wordpress
+*** Não usar o root (questões de segurança)
+
+grant all on wordpress.* to 'webmaster'@'localhost' identified by 'Webmaster@2017';
+flush privileges;
+
+Passo 3: Fazer o download da última versão do wordpress 
+
+https://wordpress.org/latest.tar.gz
+
+descompactar:
+tar -xzvf latest.tar.gz
+
+passo 4: copiar/sincronizando os arquivos para o diretório padrão do apache
+
+yum install rsync
+
+rsync -avP wordpress/ /var/www/html
+
+rsync -> copia/sincronizando os arquivos
+-a arquivo
+-v verbose
+-P preserva as permissões
+
+*** o diretório wordpress e todo seu contúdo pode ser copiado diretamente ao
+    diretório padrão do apache /var/www/html
+
+passo 5: Mudar o dono:grupo do wordpress para o usuário apache
+chown -R apache:apache /var/www/html
+
+passo 6:
+Abrir o navegador de internet e digitar o ip do servidor ou ip do servidor/wordpress
+
+Passo 7:
+Seguir a instalação de 5 passos.
+
+Criar manualmente dentro do wordpress o arquivo wp-config.php
+Observação:
+Este arquivo pode ser criado do modelo wp-config-sample.php, alterando as
+opções (referente ao banco de dados):
+'DB_NAME'
+'DB_USER'
+'DB_PASSWORD'
+'DB_HOST'
+
+ou preferencialmente copiar as configurações e colar no arquivo wp-config.php
+
+XD
+
+Para administrar o wordpress digitar o ip do servidor/wp-admin

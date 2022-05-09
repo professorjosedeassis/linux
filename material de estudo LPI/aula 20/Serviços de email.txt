@@ -1,0 +1,43 @@
+Serviços de email:
+
+http://www.postfix.org/
+http://exim.org/
+http://www.qmail.org/top.html
+https://www.zimbra.com/
+"sendmail"
+
+Instalando um serviço de email no Linux (MTA) Mail Transfer Agent
+
+Passo 1: 
+apt-get install exim4
+
+
+Passo 2:
+dpkg-reconfigure exim4-config
+
+Passo 3:
+Manter as configurações padrões "next - next - next" para
+um serviço básico de email
+
+________________________________________________________
+Comandos e caminhos que podem cair na prova
+
+/var/mail -> diretório padrão email
+mailq -> verifica a fila de emails
+/etc/aliases -> redirecionar emails
+
+_________________________________________________________
+Enviando um email pela linha de comando:
+mail -s "assunto" emaildestino@email.com
+<ctrl><d> -> envio
+
+
+
+
+
+
+
+
+
+
+

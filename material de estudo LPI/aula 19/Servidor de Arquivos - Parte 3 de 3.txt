@@ -1,0 +1,180 @@
+Passo 1:
+Montar no Linux a estrutura de diretórios de acordo com a necessidade do cliente
+### Servidor de arquivos recomenda-se montar as pastas no diretório /home
+
+- Pasta pessoal para cada usuário
+- Pasta publico
+- Pasta diretoria
+- pasta processos 
+
+### Atenção !!! 
+Mudar a permissão destas pastas
+chmod -R 777 publico
+chmod -R 777 diretoria
+chmod -R 777 processos
+
+passo 2:
+Criar usuários no Linux (preferencialmente sem opção de logar no Linux) e no Windows
+
+torres
+bete
+secretaria
+boy
+
+ex: useradd -m torres
+
+Passo 3:
+Criar os mesmos usuários no Windows
+
+Passo 4:
+Instalar o SAMBA
+apt-get update
+apt-get install samba
+
+O samba usa dois serviços:
+smbd
+nmbd
+
+service smbd status
+service nmbd status
+
+Passo 5:
+Adicionar os usuários no samba
+
+smbpasswd -a torres
+smbpasswd -a bete
+smbpasswd -a secretaria
+smbpasswd -a boy
+
+Passo 6:
+editar o arquivo smb.conf
+/etc/samba/smb.conf
+
+linha 29 -> mudar o nome do grupo de trabalho para o mesmo da rede microsoft
+linha 193 -> read only no (escrita e leitura)
+
+reiniciar os serviços
+service smbd restart
+service nmbd restart
+
+Passo 7:
+Nas estações, acessar o servidor pelo IP e fazer os mapeamentos de rede
+<Windows> <R>
+\\192.168.0.1
+
+Passo 8:
+Permissões de pastas no SAMBA
+sintaxe:
+*** no smb.conf, acrescentar:
+
+[nome da pasta]
+path = /caminho completo da pasta
+read only = yes/no (permissão de leitura e/ou leitura e escrita)
+valid users = usuario1, usuario2, etc (usuários válidos)
+invalid users = usuario1, usuario2, etc (usuários inválidos)
+read list = usuario1, usuario2, etc (usuários com permissão somente leitura)
+write list = usuario1, usuario2, etc (usuários com permissão de leitura e escrita)
+
+Para usar grupos, substituir os usuários pelo nome do grupo com "@" na frente
+@nome_grupo
+
+Servidor de impressão - CUPS
+
+apt install cups
+
+*** Administração via servidor WEB
+ip:631
+
+Configurações de acesso
+*** fazer backup
+vi /etc/cups/cupsd.conf
+Abaixo da linha 16 acrescentar:
+Listen 192.168.0.1:631 (ip do servidor)
+Linhas 31 e 36
+Acrescentar abaixo de Order allow, deny
+allow all
+### salvar, sair
+### reiniciar o cups
+service cups restart
+
+Adicionando uma impressora
+apt-get install cups-pdf
+*** driver Linux -> generico -> cups-pdf
+    driver Windows -> generic -> Publisher Imagesetter
+
+reiniciar o cups e o samba
+
+_______________________________________________________________________________
+Gerenciando cotas de disco
+
+Passo 1:
+apt-get install quota quotatool
+
+Passo 2:
+Editar o /etc/fstab (montagem automática de dispositivos)
+Acrescentar a palavra usrquota no ponto de montagem que será gerenciado
+Exemplo: /home -> depois da palavra defaults
+defaults,usrquota
+(salvar)
+Executar o comando:
+mount -o remount,rw /home
+
+Observação: Para adicionar quota ao grupo de usuários, acrescentar a palavra grpquota
+Exemplo: /home -> depois da palavra defaults
+defaults,usrquota,grpquota
+
+Passo 3: Habilitar o sistema de cotas no diretório /home
+quotacheck -muf /home (para usuários)
+quotacheck -mgf /home (para grupos)
+
+Passo 4: Ligar o sistema de quotas
+quotaon -pa
+
+Resultado:
+user on
+group on
+
+*** Caso não habilite o sistema de quotas, reiniciar o servidor
+
+Passo 5: Atribuir cotas de disco ao usuário
+edquota -u usuario
+
+### escolher valores para soft(virtual) e hard(físico)
+### 1000 = 1M
+
+Passo 6: Verificar/sincronizar quotas de usuário
+edquota -p usuario
+
+edquota -g grupo
+
+https://gnulinuxbr.wordpress.com/2009/10/14/quota-administrando-usuario/
+____________________________________________________________________________
+
+Criar um agendamento automático de backup diário do diretório home
+
+origem do backup -> /home
+destino do backup -> /mnt/hdexterno
+nome do backup: gerar automaticamente em função da data e hora 
+
+____________________________________________________________________________________
+Instalar um antivírus para segurança da rede windows (compartilhamento de arquivos)
+
+Arquivo de teste (vírus inofensivo):
+https://secure.eicar.org/eicar.com
+
+Passo 1: Instalar o antivírus (modo console)
+
+apt-get install clamav
+apt-get install clamav-daemon
+
+obs: site oficial> clamav.net
+
+clamscan -V (versão do antivirus)
+freshclam (atualizar o antivirus)
+*** bug log (apagar o freshclam.log)
+caminho: /var/log/clamav
+Dica: criar um script que apague ou mova este log e atualize o antivírus
+
+clamscan -r -i / (scanear o linux inteiro)
+clamscan -r -i /home (scanear o home)
+clamscan -r -i --remove /home (scanear e remover vírus do diretório home)

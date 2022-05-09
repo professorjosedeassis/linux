@@ -1,0 +1,4 @@
+https://pt.wikipedia.org/wiki/Crontab
+
+Executar bakup todos os dias as 23:00 mudando o nome do arquivo a cada vez.
+00 23 * * * tar -zcf /mnt/hdexterno/bkpHdExterno-`date +%Y-%m-%d`.tgz /home

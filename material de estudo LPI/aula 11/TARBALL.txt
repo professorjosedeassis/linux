@@ -1,0 +1,64 @@
+Pequena revisão:
+
+wget url -> download
+exemplo:
+wget https://www.guiafoca.org/download/static/inic_inter/focalinux-12-txt.tar.gz
+
+cp -> copiar ou copiar renomeando
+mv -> mover ou mover renomeando
+-i -> argumento que pede confirmação antes de sobrescrever
+
+__________________________________________________________
+Tar Ball -> usado para aglutinar e compactar arquivos e diretórios
+"Pode ser considerado um pacote"
+
+Sintaxe:
+Exemplo 1: Aglutinar os arquivos
+tar -cvf bkpjoseassis.tar /home/joseassis
+tar -> aglutinar
+bkpjoseassis.tar -> nome do arquivo
+/home/joseassis -> origem do backup
+
+-c (create)
+-v (verbose)
+-f (file_ -> gera um arquivo "equivale ao winrar"
+-t (exibe o conteúdo)
+-x (extrair "desaglutinar")
+-z (gz -> ferramenta de compactação nativa do linux "zip")
+-j (bz ou bz2 -> ferramenta de compactação mais eficiente)
+
+Exemplo 2: Aglutinar e compactar os arquivos
+tar -czvf bkpjoseassis.tar.gz /home/joseassis
+
+Observação: tar.gz -> tgz (* modelo mais usado tar + gz)
+
+Exemplo 3: Aglutinar e compactar os arquivos com bzip
+tar -cjvf bkpjoseassis.tar.bz2 /home/joseassis
+*** o j e o .bz ou .bz2 indica a compactação com o bzip
+
+Exemplo 4: Verificar o conteúdo do backup
+tar - tvf bkpjoseassis.tar
+
+Exemplo 5: Recuperar um backup (desaglutinar)
+tar -xvf bkpjoseassis.tar
+
+Exemplo 6: Recuperar um backup (desaglutinar e descompactar) escolhendo o
+           caminho de destino
+
+tar -xzvf bkpjoseassis.tar.gz -C /tmp
+
+_____________________________________________________________________
+
+DICA: dd (faz uma cópia idêntica bit a bit de dispositivos) clone de HD
+
+sintaxe:
+Exemplo 1: (clonar um HD)
+dd if=/dev/sda of=/dev/sdb
+
+Exemplo 2: (gerar uma imagem do HD)
+dd if=/dev/sda of=imagem.iso
+*** para restaurar a imagem: 
+dd if=imagem.iso of=/dev/sdb
+
+Exemplo 3: (fazer um backup)
+dd if=/home/usuario of=/dev/sdc/backup

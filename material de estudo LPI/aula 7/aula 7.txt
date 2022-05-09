@@ -1,0 +1,55 @@
+Comandos básicos
+
+su -> transforma o usuário em root
+sudo -> o usuário executa o comando com privilégios de root
+        (não recomendado para servidores)
+
+*** ativando o root no ubuntu
+sudo passwd
+cadastrar uma senha para o root
+
+Instalando pacotes no linux
+
+- tar (qualquer distribuição)
+- deb (debian e derivados)
+- rpm (red hat e derivados)
+
+________________________________________________________________
+Instalação de pacotes .deb
+dpkg -i pacote.deb -> instalar pacote
+dpkg -r pacote.deb -> remover pacote
+dpkg -P pacote.deb -> (Purge remover pacote, bibliotecas, dependencias, logs, etc)
+dpkg-reconfigure -> (reconfigura um pacote instalado)
+exemplo: dpkg-reconfigure keyboard-configuration -> reconfigurar o teclado
+
+APT -> instalador de pacotes .deb (debian e derivados)
+apt-get install nome_pacote -> instalar um pacote
+apt-get -f install -> resolve problemas de dependencia
+apt-get remove nome_pacote -> remover um pacote
+apt-get update -> atualiza o repositório
+apt-get dist-upgrade -> atualiza kernel e versão da distribuição
+aptitude -> gerenciar pacotes
+
+atividade: instalar o emulador de atari no ubuntu
+
+https://stella-emu.github.io/
+
+F2 -> iniciar o jogo
+setas e espaço (joystick)
+
+______________________________________________________________
+
+Comandos básicos:
+/bin -> executáveis (usuário)
+/sbin -> executáveis (root)
+which -> exibe nome e caminho do executável
+/usr/lib -> bibliotecas compartilhadas
+
+mkdir nome_diretorio -> criar um diretório
+mkdir .nome_diretorio -> criar um diretório oculto
+mkdir -p -> cria uma árvore de diretórios
+ls -a -> exibir arquivos e diretórios ocultos
+dica: usar sempre ls -la
+
+rm -r -> apagar um diretório
+rm -r .-> apagar um diretório oculto
