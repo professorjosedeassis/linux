@@ -5,13 +5,13 @@ Este curso é ideal para estudantes e profissionais de TI que desejam iniciar em
 Este curso é dividido em 4 módulos:
 * Módulo 1 - Instalação e configuração
 
-Neste módulo o aluno irá aprender a instalar e configurar o Servidor Linux, planejando a instalação de acordo com os serviços e particionando os discos com LVM de forma a obter o máximo de desempenho e segurança.
+Neste módulo você irá aprender a instalar e configurar o Servidor Linux, planejando a instalação de acordo com os serviços e particionando os discos com LVM de forma a obter o máximo de desempenho e segurança.
 * Módulo 2 - Firewall
 
-Neste módulo o aluno irá aprender a configurar o firewall do Linux usando iptables.
+Neste módulo você irá aprender a configurar o firewall do Linux usando iptables.
 * Módulo 3 - Servidor WEB
 
-Neste módulo o aluno irá montar um servidor WEB dinâmico.
+Neste módulo o objetivo é montar um servidor WEB dinâmico.
 * Módulo 4 - Servidor de banco de dados
 
 Neste módulo você irá aprender a administrar e gerenciar um servidor de banco de dados.
