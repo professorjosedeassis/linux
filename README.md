@@ -1,8 +1,8 @@
 ![GitHub](https://img.shields.io/github/license/professorjosedeassis/linux)
-# Curso Linux Essentials
-Este curso é ideal para estudantes e profissionais de TI que desejam iniciar em Linux com foco no mercado de trabalho (Administração de Servidores Linux e CLOUD). Este curso também forma uma base sólida para quem deseja estudar para certificação Linux e também atende a DevOps e desenvolvedores back-end ou full stack.
+# Linux Essentials
+Este tutorial é ideal para estudantes e profissionais de TI que desejam iniciar em Linux com foco no mercado de trabalho (Administração de Servidores Linux e CLOUD). Este tutorial também forma uma base sólida para quem deseja estudar para certificação Linux e também atende a DevOps e desenvolvedores back-end ou full stack.
 
-Este curso é dividido em 4 módulos:
+Este tutorial é dividido em 4 módulos:
 * Módulo 1 - Instalação e configuração
 
 Neste módulo você irá aprender a instalar e configurar o Servidor Linux, planejando a instalação de acordo com os serviços e particionando os discos com LVM de forma a obter o máximo de desempenho e segurança.
@@ -17,19 +17,19 @@ Neste módulo o objetivo é montar um servidor WEB dinâmico.
 Neste módulo você irá aprender a administrar e gerenciar um servidor de banco de dados.
 ### Autor
 Professor José de Assis
-### Apresentação do curso
+### Apresentação
 [![linux essentials](https://img.youtube.com/vi/fLlaKctpSsc/0.jpg)](https://youtu.be/fLlaKctpSsc "Assistir no YouTube")
 
 ![YouTube Video Views](https://img.shields.io/youtube/views/fLlaKctpSsc?style=social)
 ### Playlist
-[Iniciar curso](https://www.youtube.com/playlist?list=PLbEOwbQR9lqy926a_ArLcUL2gHJYuu8XK)
+[Iniciar tutorial](https://www.youtube.com/playlist?list=PLbEOwbQR9lqy926a_ArLcUL2gHJYuu8XK)
 ### Certificado
 [Iniciar teste](https://forms.gle/pKTw984H4iHCh98Q7)
-## Como apoiar os cursos gratuitos e projetos?
+## Como apoiar os tutoriais e projetos?
 ### Você pode:
 :heavy_check_mark: Inscrever-se no canal do YouTube - [INSCREVA-SE!](https://www.youtube.com/c/RoboticapraticaBr/?sub_confirmation=1)
 
-:heavy_check_mark: Compartilhar os cursos e projetos
+:heavy_check_mark: Compartilhar os tutoriais e projetos
 
 :heavy_check_mark: Seguir-me nas redes sociais:
 <p align="left">
