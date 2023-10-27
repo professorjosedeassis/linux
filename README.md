@@ -1,5 +1,5 @@
 ![GitHub](https://img.shields.io/github/license/professorjosedeassis/linux)
-# Tutorial - Servidores Linux para iniciantes
+# Tutorial Linux Server - Primeiros passos
 Este curso é ideal para estudantes e profissionais de TI que desejam iniciar em Linux com foco no mercado de trabalho (Administração de Servidores Linux e CLOUD). Este curso forma uma base sólida para quem deseja estudar para certificação Linux e também atende a DevOps e desenvolvedores back-end ou full stack. Durante o curso você aprenderá passo a passo na prática a instalar, configurar e administrar um Servidor Linux.
 
 Este curso é dividido em 4 módulos:
@@ -24,7 +24,11 @@ Professor José de Assis
 ### Iniciar tutorial:
 [Playlist](https://www.youtube.com/playlist?list=PLbEOwbQR9lqy926a_ArLcUL2gHJYuu8XK)
 ## Como apoiar os tutoriais e projetos?
-### Você pode:
+### Você pode me pagar um café! ☕
+
+### Chave PIX:
+` josedeassisfilho@gmail.com `
+### Você também pode:
 :heavy_check_mark: Inscrever-se no canal do YouTube - [INSCREVA-SE!](https://www.youtube.com/c/RoboticapraticaBr/?sub_confirmation=1)
 
 :heavy_check_mark: Compartilhar os tutoriais e projetos
@@ -37,10 +41,5 @@ Professor José de Assis
 <a href="https://instagram.com/prof.joseassis" target="blank"><img align="center" src="https://github.com/professorjosedeassis/joseassis/blob/main/img/instagram.png" alt="prof.joseassis" height="48" width="48" /></a>
 <a href="https://twitter.com/joseassis" target="blank"><img align="center" src="https://github.com/professorjosedeassis/joseassis/blob/main/img/twitter.png" alt="joseassis" height="48" width="48" /></a>
 </p>
-
-### Você também pode me pagar um café! ☕
-
-### Chave PIX:
-` josedeassisfilho@gmail.com `
 
 ### :smiley: Muito obrigado pelo apoio!
