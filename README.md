@@ -1,5 +1,5 @@
 ![GitHub](https://img.shields.io/github/license/professorjosedeassis/linux)
-# Tutorial Linux Server - Primeiros passos
+# Linux Server - Primeiros passos com Servidor Linux
 Este curso é ideal para estudantes e profissionais de TI que desejam iniciar em Linux com foco no mercado de trabalho (Administração de Servidores Linux e CLOUD). Este curso forma uma base sólida para quem deseja estudar para certificação Linux e também atende a DevOps e desenvolvedores back-end ou full stack. Durante o curso você aprenderá passo a passo na prática a instalar, configurar e administrar um Servidor Linux.
 
 Este curso é dividido em 4 módulos:
@@ -21,7 +21,7 @@ Professor José de Assis
 [![linux essentials](https://img.youtube.com/vi/fLlaKctpSsc/0.jpg)](https://youtu.be/fLlaKctpSsc "Assistir no YouTube")
 
 ![YouTube Video Views](https://img.shields.io/youtube/views/fLlaKctpSsc?style=social)
-### Iniciar tutorial:
+### Iniciar curso:
 [Playlist](https://www.youtube.com/playlist?list=PLbEOwbQR9lqy926a_ArLcUL2gHJYuu8XK)
 ## Como apoiar os tutoriais e projetos?
 ### Você pode me pagar um café! ☕
